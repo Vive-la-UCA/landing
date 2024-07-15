@@ -28,7 +28,7 @@ const instructions = [
 ];
 ---
 
-<section class="container" transition:animate="slide">
+<section transition:animate="slide">
   {
     instructions.map((instrucciones) => (
       <Instruction
@@ -40,4 +40,10 @@ const instructions = [
   }
 </section>
 
-<style></style>
+<style>
+  section {
+    width: 80%;
+    margin: 0% 10%;
+    overflow: hidden;
+  }
+</style>
