@@ -1,0 +1,43 @@
+---
+import Instruction from "./Instruction.astro";
+
+const instructions = [
+  {
+    title: "1. Ubica el archivo APK",
+    description:
+      "Una vez finalizada la descarga de la aplicación, abre el historial de descargas de tu navegador. También puedes encontrarlo en la barra de notificaciones de tu teléfono.",
+    image: "/images/notif.jpg",
+  },
+  {
+    title: "2. Concede los permisos",
+    description:
+      "Si aparece un mensaje de advertencia, haga clic en Configuración y otorgue permiso a su navegador para instalar aplicaciones de fuentes desconocidas. Habilite la opción Permitir desde esta fuente",
+    image: "/images/permisos.jpg",
+  },
+  {
+    title: "3. Instala la aplicación",
+    description:
+      "Completa el proceso de instalación y cuando finalice, haz click para abrirla y concede todos los permisos necesarios",
+    image: "/images/instalando.jpg",
+  },
+  {
+    title: "4. Explora",
+    description:
+      "Disfruta tu recorrido (Tip: no olvides permitir el uso de tu ubicación)",
+  },
+];
+---
+
+<section class="container" transition:animate="slide">
+  {
+    instructions.map((instrucciones) => (
+      <Instruction
+        title={instrucciones.title}
+        description={instrucciones.description}
+        image={instrucciones.image}
+      />
+    ))
+  }
+</section>
+
+<style></style>
