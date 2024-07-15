@@ -37,6 +37,7 @@ const { title, description, image } = Astro.props;
     font-size: 2.4rem;
     font-weight: bold;
   }
+
   .details p {
     color: #585858;
     font-size: 1.2rem;
@@ -46,5 +47,51 @@ const { title, description, image } = Astro.props;
     width: 30%;
     object-fit: cover;
     border-radius: 30px;
+  }
+
+  @media (max-width: 1024px) {
+    .card-instruction {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .details {
+      width: 100%;
+    }
+
+    .card-instruction img {
+      width: 80%;
+      margin-top: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .card-instruction {
+      margin: 20px;
+      gap: 20px;
+    }
+
+    .details h2 {
+      font-size: 2rem;
+    }
+
+    .details p {
+      font-size: 1rem;
+    }
+
+    .card-instruction img {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .details h2 {
+      font-size: 1.8rem;
+    }
+
+    .details p {
+      font-size: 0.9rem;
+    }
   }
 </style>
