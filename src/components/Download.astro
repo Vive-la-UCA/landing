@@ -13,6 +13,10 @@
       </div>
     </div>
     <p id="progressText" style="display: none;">Descargando... 0%</p>
+    <p id="errorText" style="display: none; color: red;"></p>
+    <button id="retryButton" style="display: none;" class="btn"
+      >Reintentar descarga</button
+    >
   </div>
 </section>
 
@@ -22,11 +26,11 @@
     const progressContainer = document.getElementById("progressContainer");
     const progressBar = document.getElementById("progressBar");
     const progressText = document.getElementById("progressText");
+    const errorText = document.getElementById("errorText");
+    const retryButton = document.getElementById("retryButton");
     let downloadStarted = false;
 
-    downloadButton.addEventListener("click", (e) => {
-      e.preventDefault();
-
+    const initiateDownload = () => {
       if (downloadStarted) return;
 
       const xhr = new XMLHttpRequest();
@@ -48,6 +52,8 @@
         downloadStarted = true;
         progressContainer.style.display = "block";
         progressText.style.display = "block";
+        errorText.style.display = "none";
+        retryButton.style.display = "none";
       };
 
       xhr.onload = () => {
@@ -66,21 +72,34 @@
             window.location.href = "/Instructions";
           }, 1000);
         } else {
-          downloadStarted = false;
-          progressContainer.style.display = "none";
-          progressText.style.display = "none";
-          alert("Error al descargar el archivo. Inténtalo de nuevo");
+          handleDownloadError(`Error ${xhr.status}: ${xhr.statusText}`);
         }
       };
 
       xhr.onerror = () => {
-        downloadStarted = false;
-        progressContainer.style.display = "none";
-        progressText.style.display = "none";
-        alert("Error al descargar el archivo. Inténtalo de nuevo");
+        handleDownloadError("Error de red. Por favor, inténtalo de nuevo.");
       };
 
       xhr.send();
+    };
+
+    const handleDownloadError = (message) => {
+      downloadStarted = false;
+      progressContainer.style.display = "none";
+      progressText.style.display = "none";
+      errorText.textContent = message;
+      errorText.style.display = "block";
+      retryButton.style.display = "inline-block";
+    };
+
+    downloadButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      initiateDownload();
+    });
+
+    retryButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      initiateDownload();
     });
   });
 </script>
