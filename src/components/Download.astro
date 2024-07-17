@@ -33,6 +33,12 @@
     const initiateDownload = () => {
       if (downloadStarted) return;
 
+      downloadStarted = true;
+      progressContainer.style.display = "block";
+      progressText.style.display = "block";
+      errorText.style.display = "none";
+      retryButton.style.display = "none";
+
       const xhr = new XMLHttpRequest();
       xhr.open("GET", "apk/ViveLaUCA.apk", true);
       xhr.responseType = "blob";
@@ -48,14 +54,6 @@
         }
       };
 
-      xhr.onloadstart = () => {
-        downloadStarted = true;
-        progressContainer.style.display = "block";
-        progressText.style.display = "block";
-        errorText.style.display = "none";
-        retryButton.style.display = "none";
-      };
-
       xhr.onload = () => {
         if (xhr.status === 200) {
           const link = document.createElement("a");
@@ -68,9 +66,13 @@
 
           document.title = "Descarga completa";
           progressText.textContent = "Descarga completa";
-          setTimeout(() => {
-            window.location.href = "/Instructions";
-          }, 1000);
+
+          // Esperar hasta que el usuario haya confirmado la descarga antes de redirigir
+          window.addEventListener("focus", () => {
+            setTimeout(() => {
+              window.location.href = "/Instructions";
+            }, 1000);
+          });
         } else {
           handleDownloadError(`Error ${xhr.status}: ${xhr.statusText}`);
         }
