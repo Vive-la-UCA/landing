@@ -42,6 +42,11 @@
     const instructionsButton = document.getElementById("instructionsButton");
     let downloadStarted = false;
 
+    const resetProgress = () => {
+      progressBar.style.width = "0%";
+      progressText.textContent = "Descargando... 0%";
+    };
+
     const initiateDownload = () => {
       if (downloadStarted) return;
 
@@ -50,6 +55,7 @@
       progressText.style.display = "block";
       errorText.style.display = "none";
       retryButton.style.display = "none";
+      resetProgress();
 
       const xhr = new XMLHttpRequest();
       xhr.open("GET", "apk/ViveLaUCA.apk", true);
@@ -66,10 +72,6 @@
         }
       };
 
-      xhr.onloadstart = () => {
-        modal.style.display = "block";
-      };
-
       xhr.onload = () => {
         if (xhr.status === 200) {
           const link = document.createElement("a");
@@ -82,20 +84,25 @@
 
           document.title = "Descarga completa";
           progressText.textContent = "Descarga completa";
+
+          setTimeout(() => {
+            modal.style.display = "block";
+          }, 2000); // Mostrar modal después de 2 segundos
         } else {
           handleDownloadError(`Error ${xhr.status}: ${xhr.statusText}`);
         }
+        downloadStarted = false;
       };
 
       xhr.onerror = () => {
         handleDownloadError("Error de red. Por favor, inténtalo de nuevo.");
+        downloadStarted = false;
       };
 
       xhr.send();
     };
 
     const handleDownloadError = (message) => {
-      downloadStarted = false;
       progressContainer.style.display = "none";
       progressText.style.display = "none";
       errorText.textContent = message;
@@ -193,15 +200,29 @@
   .modal-content {
     background-color: #fefefe;
     margin: 5% auto;
+    border-radius: 10px;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
     max-width: 300px;
     text-align: center;
   }
+  .modal-content p {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #instructionsButton {
+    background-color: #e68a00;
+    border: none;
+    padding: 10px 15px;
+    font-weight: bold;
+    color: white;
+    border-radius: 10px;
+  }
 
   .close {
-    color: #aaa;
+    color: gray;
     float: right;
     font-size: 28px;
     font-weight: bold;
