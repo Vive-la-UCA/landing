@@ -5,12 +5,23 @@
     <a href="apk/ViveLaUCA.apk" class="btn" id="downloadButton"
       >Descargar ahora</a
     >
+    <div id="progressContainer" style="display: none;">
+      <div
+        id="progressBar"
+        style="width: 0%; height: 20px; background: #ff9900; border-radius: 5px;"
+      >
+      </div>
+    </div>
+    <p id="progressText" style="display: none;">Descargando... 0%</p>
   </div>
 </section>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const downloadButton = document.getElementById("downloadButton");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
     let downloadStarted = false;
 
     downloadButton.addEventListener("click", (e) => {
@@ -27,12 +38,16 @@
           const percentComplete = Math.round(
             (event.loaded / event.total) * 100
           );
+          progressBar.style.width = `${percentComplete}%`;
+          progressText.textContent = `Descargando... ${percentComplete}%`;
           document.title = `Descargando... ${percentComplete}%`;
         }
       };
 
       xhr.onloadstart = () => {
         downloadStarted = true;
+        progressContainer.style.display = "block";
+        progressText.style.display = "block";
       };
 
       xhr.onload = () => {
@@ -46,18 +61,22 @@
           URL.revokeObjectURL(link.href);
 
           document.title = "Descarga completa";
-
+          progressText.textContent = "Descarga completa";
           setTimeout(() => {
             window.location.href = "/Instructions";
           }, 1000);
         } else {
           downloadStarted = false;
+          progressContainer.style.display = "none";
+          progressText.style.display = "none";
           alert("Error al descargar el archivo. Inténtalo de nuevo");
         }
       };
 
       xhr.onerror = () => {
         downloadStarted = false;
+        progressContainer.style.display = "none";
+        progressText.style.display = "none";
         alert("Error al descargar el archivo. Inténtalo de nuevo");
       };
 
@@ -97,5 +116,18 @@
 
   #download .btn:hover {
     background: #e68a00;
+  }
+
+  #progressContainer {
+    width: 100%;
+    background: #e0e0e0;
+    border-radius: 5px;
+    margin: 20px 0;
+  }
+
+  #progressText {
+    font-size: 1em;
+    color: #666;
+    margin-top: 10px;
   }
 </style>
