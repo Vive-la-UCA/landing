@@ -42,10 +42,17 @@
           URL.revokeObjectURL(link.href);
 
           document.title = "Descarga completa";
-          setTimeout(() => {
-            window.location.href = "/Instructions";
-          }, 1000);
+          // Redirigir solo después de que el usuario confirme la descarga
+          window.addEventListener("focus", () => {
+            setTimeout(() => {
+              window.location.href = "/Instructions";
+            }, 1000);
+          });
         }
+      };
+
+      xhr.onerror = () => {
+        alert("Error al descargar el archivo. Inténtalo de nuevo.");
       };
 
       xhr.send();
