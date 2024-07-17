@@ -1,7 +1,3 @@
----
-
----
-
 <section id="download">
   <div class="container" data-aos="fade-up">
     <h2>Descarga la App</h2>
@@ -15,8 +11,12 @@
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const downloadButton = document.getElementById("downloadButton");
+    let downloadStarted = false;
+
     downloadButton.addEventListener("click", (e) => {
       e.preventDefault();
+
+      if (downloadStarted) return;
 
       const xhr = new XMLHttpRequest();
       xhr.open("GET", "apk/ViveLaUCA.apk", true);
@@ -31,6 +31,10 @@
         }
       };
 
+      xhr.onloadstart = () => {
+        downloadStarted = true;
+      };
+
       xhr.onload = () => {
         if (xhr.status === 200) {
           const link = document.createElement("a");
@@ -42,16 +46,18 @@
           URL.revokeObjectURL(link.href);
 
           document.title = "Descarga completa";
-          // Redirigir solo después de que el usuario confirme la descarga
-          window.addEventListener("focus", () => {
-            setTimeout(() => {
-              window.location.href = "/Instructions";
-            }, 1000);
-          });
+
+          setTimeout(() => {
+            window.location.href = "/Instructions";
+          }, 1000);
+        } else {
+          downloadStarted = false;
+          alert("Error al descargar el archivo. Inténtalo de nuevo");
         }
       };
 
       xhr.onerror = () => {
+        downloadStarted = false;
         alert("Error al descargar el archivo. Inténtalo de nuevo");
       };
 
