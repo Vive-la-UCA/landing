@@ -67,12 +67,10 @@
           document.title = "Descarga completa";
           progressText.textContent = "Descarga completa";
 
-          // Esperar hasta que el usuario haya confirmado la descarga antes de redirigir
-          window.addEventListener("focus", () => {
-            setTimeout(() => {
-              window.location.href = "/Instructions";
-            }, 1000);
-          });
+          // Redirigir después de un tiempo fijo para asegurar la descarga
+          setTimeout(() => {
+            window.location.href = "/Instructions";
+          }, 10000); // Ajusta el tiempo según sea necesario
         } else {
           handleDownloadError(`Error ${xhr.status}: ${xhr.statusText}`);
         }
