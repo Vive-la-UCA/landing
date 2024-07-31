@@ -8,4 +8,4 @@ services:
       - "/app/.tscache"
       - "/app/dist"
       - "/app/node_modules"
-    container_name: landing
+    container_name: vive-la-uca-landing
